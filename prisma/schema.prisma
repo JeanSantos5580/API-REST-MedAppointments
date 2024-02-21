@@ -1,0 +1,76 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum Genre {
+  MALE
+  FEMALE
+  OTHER
+  NOT_SPECIFIED
+}
+
+enum Status {
+  SCHEDULED
+  IN_PROGRESS
+  COMPLETED
+  CANCELED
+}
+
+model Patient {
+  id            String          @unique @default(uuid())
+  name          String
+  birth         DateTime
+  genre         Genre
+  address       String
+  phone         String
+  email         String
+  Appointment   Appointment[]
+  PatientDoctor PatientDoctor[]
+
+  @@map("patient")
+}
+
+model Doctor {
+  id            String          @unique @default(uuid())
+  name          String
+  specialty     String
+  crm           String          @unique
+  address       String
+  phone         String
+  email         String
+  bio           String
+  Appointment   Appointment[]
+  PatientDoctor PatientDoctor[]
+
+  @@map("doctor")
+}
+
+model Appointment {
+  id               String   @unique @default(uuid())
+  appointment_time DateTime
+  status           Status
+  observation      String
+  diagnostic       String
+
+  patient_id String
+  Patient    Patient @relation(fields: [patient_id], references: [id])
+  doctor_id  String
+  Doctor     Doctor  @relation(fields: [doctor_id], references: [id])
+
+  @@map("appointment")
+}
+
+model PatientDoctor {
+  id         String  @id @default(uuid())
+  patient_id String
+  Patient    Patient @relation(fields: [patient_id], references: [id])
+  doctor_id  String
+  Doctor     Doctor  @relation(fields: [doctor_id], references: [id])
+
+  @@unique([patient_id, doctor_id])
+}
