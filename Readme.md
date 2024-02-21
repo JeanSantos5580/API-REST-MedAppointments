@@ -117,7 +117,7 @@ npx prisma migrate dev
   ```json
   {
     "name": "João",
-    "birth": "1990-05-15",
+    "birth": "1990-05-15T08:00:00Z", // Exemplo de data e hora com o formato ISO 8601
     "genre": "MALE",
     "address": "Rua A, 123",
     "phone": "(11) 99999-9999",
@@ -130,7 +130,7 @@ npx prisma migrate dev
   ```json
   {
     "name": "João Silva",
-    "birth": "1990-05-15",
+    "birth": "1990-05-15T08:00:00Z",
     "genre": "MALE",
     "address": "Rua B, 456",
     "phone": "(11) 88888-8888",
